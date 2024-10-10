@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -32,5 +33,16 @@ public class FruitService {
 
     public void delete(int id) {
         fruitRepository.deleteById(id);
+    }
+
+    public Fruit getUpdatedFruit(Optional<Fruit> opFruit, Fruit newFruit) throws NoSuchElementException {
+        if(opFruit.isPresent()) {
+            Fruit updatedFruit = opFruit.get();
+            updatedFruit.setName(newFruit.getName());
+            updatedFruit.setQuantityKilos(newFruit.getQuantityKilos());
+            return updatedFruit;
+        } else {
+            throw new NoSuchElementException("Fruit not found");
+        }
     }
 }

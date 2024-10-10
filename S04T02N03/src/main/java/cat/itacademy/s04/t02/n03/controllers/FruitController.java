@@ -29,13 +29,11 @@ public class FruitController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateFruit (@RequestBody Fruit newFruit, @PathVariable (value = "id")int id ){
+    public ResponseEntity<?> updateFruit (@RequestBody Fruit newFruit, @PathVariable (value = "id")Integer id ){
         Optional<Fruit> fruitDetails = fruitService.getOne(id);
+        Fruit updatedFruit = fruitService.getUpdatedFruit(fruitDetails, newFruit);
 
-        if(fruitDetails.isPresent()){
-            Fruit updatedFruit = fruitDetails.get();
-            updatedFruit.setName(newFruit.getName());
-            updatedFruit.setQuantityKilos(newFruit.getQuantityKilos());
+        if(updatedFruit != null){
             return new ResponseEntity<>(fruitService.update(updatedFruit), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
